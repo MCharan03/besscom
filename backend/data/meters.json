@@ -1,0 +1,1802 @@
+[
+  {
+    "meter_id": "MTR-00001",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 93.0,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00002",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 196.1,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00003",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 431.9,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00004",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 125.2,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00005",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 95.5,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00006",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 342.8,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00007",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 183.4,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00008",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 363.4,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00009",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 386.4,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00010",
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 83.4,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00011",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 256.9,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00012",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 577.8,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00013",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 128.2,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00014",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 520.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00015",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 499.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00016",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 358.8,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00017",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 276.8,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00018",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 511.3,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00019",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 528.1,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00020",
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 446.4,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00021",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 230.5,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00022",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 201.1,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00023",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 224.5,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00024",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 269.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00025",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 188.9,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00026",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 567.1,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00027",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 396.7,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00028",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 459.1,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00029",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 277.3,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00030",
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 412.8,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00031",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 518.3,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00032",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 199.1,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00033",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 244.0,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00034",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 189.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00035",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 535.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00036",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 420.8,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00037",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 555.6,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00038",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 217.7,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00039",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 371.9,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00040",
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "consumer_type": "residential",
+    "base_kwh_day": 384.0,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00041",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 194.0,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00042",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 345.0,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00043",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 104.5,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00044",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 406.3,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00045",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 299.5,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00046",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 278.4,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00047",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 355.1,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00048",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 527.6,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00049",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 454.8,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00050",
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 359.2,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00051",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 138.0,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00052",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 315.9,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00053",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 535.4,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00054",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 340.3,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00055",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 554.6,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00056",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 235.2,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00057",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 396.7,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00058",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 476.5,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00059",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 484.9,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00060",
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 80.3,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00061",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 563.1,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00062",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 512.5,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00063",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 110.1,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00064",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 572.4,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00065",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 332.7,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00066",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 475.5,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00067",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 146.8,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00068",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 365.9,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00069",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 533.7,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00070",
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 190.1,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00071",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 184.6,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00072",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 597.5,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00073",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 307.8,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00074",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 142.9,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00075",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 255.8,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00076",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 199.7,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00077",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 116.9,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00078",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 199.0,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00079",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 527.0,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00080",
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "consumer_type": "commercial",
+    "base_kwh_day": 203.8,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00081",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 148.8,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00082",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 376.9,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00083",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 488.0,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00084",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 179.0,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00085",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 304.1,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00086",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 322.9,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00087",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 430.1,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00088",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 131.2,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00089",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 256.4,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00090",
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 209.3,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00091",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 299.4,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00092",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 209.9,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00093",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 310.4,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00094",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 366.2,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00095",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 599.6,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00096",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 583.9,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00097",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 521.3,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00098",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 332.5,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00099",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 288.5,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00100",
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 277.1,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00101",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 487.7,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00102",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 300.0,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00103",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 597.6,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00104",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 453.6,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00105",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 234.3,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00106",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 381.2,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00107",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 468.9,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00108",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 383.8,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00109",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 523.4,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00110",
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 579.6,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00111",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 389.4,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00112",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 202.3,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00113",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 542.9,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00114",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 389.1,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00115",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 298.0,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00116",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 351.8,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00117",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 186.2,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00118",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 204.1,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00119",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 429.3,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00120",
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "consumer_type": "industrial",
+    "base_kwh_day": 244.4,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00121",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 318.3,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00122",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 118.1,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00123",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 148.9,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00124",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 537.2,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00125",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 307.9,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00126",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 398.1,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00127",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 355.0,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00128",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 235.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00129",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 217.5,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00130",
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 367.7,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00131",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 258.3,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00132",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 342.8,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00133",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 128.0,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00134",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 102.9,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00135",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 411.3,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00136",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 309.8,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00137",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 85.0,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00138",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 550.0,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00139",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 382.9,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00140",
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 101.8,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00141",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 189.2,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00142",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 263.9,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00143",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 586.4,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00144",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 529.6,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00145",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 538.3,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00146",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 560.7,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00147",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 497.2,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00148",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 218.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00149",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 278.9,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00150",
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 195.7,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00151",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 506.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00152",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 92.3,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00153",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 224.9,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00154",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 262.6,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00155",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 590.2,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00156",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 140.0,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00157",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 381.9,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00158",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 136.4,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00159",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 488.9,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00160",
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "consumer_type": "mixed",
+    "base_kwh_day": 140.1,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00161",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 448.6,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00162",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 437.2,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00163",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 428.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00164",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 573.4,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00165",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 243.2,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00166",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 548.0,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00167",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 292.4,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00168",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 368.3,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00169",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 569.0,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00170",
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 400.1,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00171",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 238.0,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00172",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 395.5,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00173",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 309.9,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00174",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 492.7,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00175",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 168.2,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00176",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 425.2,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00177",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 505.6,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00178",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 241.4,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00179",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 92.7,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00180",
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 397.9,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00181",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 407.5,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00182",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 279.7,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00183",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 421.2,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00184",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 484.8,
+    "has_ac": false,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00185",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 349.3,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00186",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 557.1,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00187",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 496.7,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00188",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 389.6,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00189",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 398.6,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00190",
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 301.9,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00191",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 466.7,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00192",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 470.9,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00193",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 478.2,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00194",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 204.4,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00195",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 228.6,
+    "has_ac": false,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00196",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 544.4,
+    "has_ac": false,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00197",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 200.3,
+    "has_ac": true,
+    "category": "industrial"
+  },
+  {
+    "meter_id": "MTR-00198",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 191.3,
+    "has_ac": true,
+    "category": "commercial"
+  },
+  {
+    "meter_id": "MTR-00199",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 362.2,
+    "has_ac": true,
+    "category": "residential"
+  },
+  {
+    "meter_id": "MTR-00200",
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "consumer_type": "mixed",
+    "base_kwh_day": 513.1,
+    "has_ac": true,
+    "category": "industrial"
+  }
+]

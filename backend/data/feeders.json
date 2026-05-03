@@ -1,0 +1,162 @@
+[
+  {
+    "feeder_id": "FDR-001",
+    "locality": "Jayanagar",
+    "type": "residential",
+    "base_mw": 2.08,
+    "rated_mw": 2.6,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-002",
+    "locality": "Jayanagar",
+    "type": "residential",
+    "base_mw": 2.12,
+    "rated_mw": 2.6,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-003",
+    "locality": "Jayanagar",
+    "type": "residential",
+    "base_mw": 1.84,
+    "rated_mw": 2.6,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-004",
+    "locality": "Jayanagar",
+    "type": "residential",
+    "base_mw": 2.11,
+    "rated_mw": 2.6,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-005",
+    "locality": "Shivajinagar",
+    "type": "commercial",
+    "base_mw": 2.7399999999999998,
+    "rated_mw": 3.64,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-006",
+    "locality": "Shivajinagar",
+    "type": "commercial",
+    "base_mw": 2.88,
+    "rated_mw": 3.64,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-007",
+    "locality": "Shivajinagar",
+    "type": "commercial",
+    "base_mw": 2.51,
+    "rated_mw": 3.64,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-008",
+    "locality": "Shivajinagar",
+    "type": "commercial",
+    "base_mw": 2.94,
+    "rated_mw": 3.64,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-009",
+    "locality": "Whitefield",
+    "type": "industrial",
+    "base_mw": 3.33,
+    "rated_mw": 4.55,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-010",
+    "locality": "Whitefield",
+    "type": "industrial",
+    "base_mw": 3.47,
+    "rated_mw": 4.55,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-011",
+    "locality": "Whitefield",
+    "type": "industrial",
+    "base_mw": 3.36,
+    "rated_mw": 4.55,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-012",
+    "locality": "Whitefield",
+    "type": "industrial",
+    "base_mw": 3.31,
+    "rated_mw": 4.55,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-013",
+    "locality": "Yeshwanthpur",
+    "type": "mixed",
+    "base_mw": 2.1399999999999997,
+    "rated_mw": 3.12,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-014",
+    "locality": "Yeshwanthpur",
+    "type": "mixed",
+    "base_mw": 2.23,
+    "rated_mw": 3.12,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-015",
+    "locality": "Yeshwanthpur",
+    "type": "mixed",
+    "base_mw": 2.6399999999999997,
+    "rated_mw": 3.12,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-016",
+    "locality": "Yeshwanthpur",
+    "type": "mixed",
+    "base_mw": 2.31,
+    "rated_mw": 3.12,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-017",
+    "locality": "Koramangala",
+    "type": "mixed",
+    "base_mw": 2.45,
+    "rated_mw": 3.38,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-018",
+    "locality": "Koramangala",
+    "type": "mixed",
+    "base_mw": 2.8000000000000003,
+    "rated_mw": 3.38,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-019",
+    "locality": "Koramangala",
+    "type": "mixed",
+    "base_mw": 2.5500000000000003,
+    "rated_mw": 3.38,
+    "meter_count": 10
+  },
+  {
+    "feeder_id": "FDR-020",
+    "locality": "Koramangala",
+    "type": "mixed",
+    "base_mw": 2.84,
+    "rated_mw": 3.38,
+    "meter_count": 10
+  }
+]
