@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: besscom/backend/Dockerfile
+    container_name: bescom_backend
+    env_file:
+      - .env
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+    networks:
+      - bescom_net
+
+  frontend:
+    build:
+      context: .
+      dockerfile: besscom/frontend/Dockerfile
+    container_name: bescom_frontend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - bescom_net
+
+networks:
+  bescom_net:
+    driver: bridge
