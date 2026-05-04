@@ -1,0 +1,35 @@
+%% BESCOM Smart Grid Architecture (Mermaid)
+graph TD
+  A[Smart Meters (1M)] -->|MQTT/TLS| B[Regional Edge Gateways]
+  B -->|Kafka Producer| C[Kafka Cluster (MSK / Confluent)]
+  C --> D[Flink / Stream Processing Cluster]
+  D --> E[Alert Enricher & Priority Queue]
+  D --> F[Model Serving / Inference (Seldon/BentoML)]
+  D --> G[Online Feature Store (Redis Cluster)]
+  D --> H[TimescaleDB (Hot TSDB)]
+  H --> I[Object Storage (S3) / Parquet (Cold)]
+  E --> J[Alerts API / Ticketing / OMS]
+  F --> K[Forecast API / Model Registry (MLflow)]
+  J --> L[Operator UI / Dashboard]
+  K --> L
+  H --> L
+  C --> M[Batch / Analytics (Spark / ClickHouse)]
+  M --> I
+
+  subgraph Edge
+    B
+  end
+  subgraph Streaming
+    C --> D --> E
+    D --> F
+    D --> G
+  end
+  subgraph Storage
+    H --> I
+    M
+  end
+
+%% Notes
+%% - Partition Kafka topics by feeder_id / region to preserve ordering.
+%% - Flink: RocksDB state backend, S3 checkpoints.
+%% - Inline scoring for light models; model-server for heavy inference.

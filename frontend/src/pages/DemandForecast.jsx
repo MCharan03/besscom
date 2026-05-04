@@ -7,9 +7,9 @@ import {
   Tooltip, ResponsiveContainer
 } from 'recharts';
 
-const API = 'http://localhost:8000/api';
+const API = 'http://localhost:8001/api';
 
-const FEEDERS = Array.from({ length: 20 }, (_, i) => `F${String(i + 1).padStart(2, '0')}`);
+const FEEDERS = Array.from({ length: 20 }, (_, i) => `FDR-${String(i + 1).padStart(3, '0')}`);
 
 function STLPanel({ stl }) {
   if (!stl) return null;
@@ -53,7 +53,7 @@ function MetricsBadge({ label, value, unit, good }) {
 
 export default function DemandForecast() {
   const [searchParams] = useSearchParams();
-  const [feeder, setFeeder]   = useState(searchParams.get('feeder') || 'F01');
+  const [feeder, setFeeder]   = useState(searchParams.get('feeder') || 'FDR-001');
   const [data, setData]       = useState(null);
   const [loading, setLoading] = useState(false);
   const [showBase, setShowBase] = useState(false);

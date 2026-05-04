@@ -173,8 +173,10 @@ class DemandForecaster:
 
         # Bootstrap future by repeating last-week same-hour window
         week_back = raw.iloc[-672:].copy()
-        week_back.index = future_idx[:len(week_back)]
-        extended = pd.concat([raw, week_back.reindex(future_idx, method="nearest")])
+        # Use only the same amount of data as needed for future forecast
+        week_back_subset = week_back.iloc[-n_intervals:].copy()
+        week_back_subset.index = future_idx
+        extended = pd.concat([raw, week_back_subset])
         extended = extended[~extended.index.duplicated(keep="last")]
 
         feat = build_features(extended)

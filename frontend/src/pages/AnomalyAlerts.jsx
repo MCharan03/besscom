@@ -5,7 +5,7 @@ import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip
 } from 'recharts';
 
-const API = 'http://localhost:8000/api';
+const API = 'http://localhost:8001/api';
 
 function ScoreBadge({ score }) {
   const cls = score >= 80 ? 'score-critical' : score >= 60 ? 'score-high' : 'score-low';

@@ -1,0 +1,12 @@
+project_name        = "bescom"
+environment         = "prod"
+aws_region          = "ap-south-1"
+vpc_cidr            = "10.20.0.0/16"
+availability_zones  = ["ap-south-1a", "ap-south-1b", "ap-south-1c"]
+eks_cluster_version = "1.30"
+
+tags = {
+  ManagedBy = "Terraform"
+  App       = "BESCOM Smart Meter AI"
+  Owner     = "grid-platform"
+}

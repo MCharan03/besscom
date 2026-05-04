@@ -4,7 +4,7 @@ import KPICard from '../components/KPICard';
 import AlertCard from '../components/AlertCard';
 import RiskBadge from '../components/RiskBadge';
 
-const API = 'http://localhost:8000/api';
+const API = 'http://localhost:8001/api';
 
 function FeederCell({ feeder, onClick }) {
   const riskColors = {
