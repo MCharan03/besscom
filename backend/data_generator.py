@@ -8,6 +8,7 @@ Injects 15 anomaly signatures matching PRD taxonomy.
 import os
 import json
 import random
+import hashlib
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
@@ -46,6 +47,22 @@ FESTIVALS = {
 SUMMER_MONTHS = [4, 5, 6]
 PEAK_HOURS    = range(18, 22)   # 6 PM – 10 PM
 TROUGH_HOURS  = range(2, 5)     # 2 AM – 5 AM
+
+
+# ── Consumer ID Masking ────────────────────────────────────────────────────────
+def mask_consumer_id(meter_id: str) -> str:
+    """
+    Pseudonymise a meter ID using SHA-256 hashing.
+    Returns format: "MTR-" followed by first 8 characters of hex digest.
+    
+    Args:
+        meter_id: Raw meter ID string (e.g., "MTR-00001")
+        
+    Returns:
+        Masked meter ID (e.g., "MTR-a7f8c2d5")
+    """
+    hash_digest = hashlib.sha256(meter_id.encode()).hexdigest()
+    return f"MTR-{hash_digest[:8]}"
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -117,8 +134,10 @@ def build_metadata():
             feeders.append(feeder)
             for mi in range(METERS_PER_FEEDER):
                 mid += 1
+                raw_meter_id = f"MTR-{mid:05d}"
+                masked_meter_id = mask_consumer_id(raw_meter_id)
                 meters.append({
-                    "meter_id":    f"MTR-{mid:05d}",
+                    "meter_id":    masked_meter_id,
                     "feeder_id":   feeder["feeder_id"],
                     "locality":    locality,
                     "consumer_type": info["type"],
@@ -152,41 +171,49 @@ def generate_meter_series(meter: dict, timestamps: pd.DatetimeIndex,
         atype = anomaly["type"]
         n     = len(vals)
 
-        if atype == "sustained_drop":
-            # Random 9-day window → drop to <5% of local median
-            start = random.randint(n // 4, n * 3 // 4)
-            end   = min(start + 9 * INTERVALS_PER_DAY, n)
-            vals[start:end] *= 0.04
-
-        elif atype == "night_spike":
-            # Add large spikes between 01:00–04:00 for random 5-day stretch
-            start_day = random.randint(n // 4, n * 3 // 4) // INTERVALS_PER_DAY
-            for d in range(start_day, start_day + 5):
-                for h in range(1, 5):
-                    idx = d * INTERVALS_PER_DAY + h * 4
-                    if idx < n:
-                        vals[idx:idx+4] *= 6.0
-
-        elif atype == "peer_deviation":
-            # Persistent 60% reduction across whole series
-            vals *= 0.40
-
-        elif atype == "meter_freeze":
+        if atype == "meter_freeze":
             # 48+ consecutive identical readings in a random window
             start = random.randint(n // 3, n * 2 // 3)
             frozen_val = float(vals[start])
             vals[start:start + 200] = frozen_val   # ~50 hrs
 
-        elif atype == "seasonal_noncompliance":
-            # Suppress summer peaks
+        elif atype == "dt_mismatch":
+            # Sum of downstream meters differs from DT output by >15%
+            # Simulate by introducing random jumps that break aggregation consistency
+            start = random.randint(n // 4, n * 3 // 4)
+            end   = min(start + 7 * INTERVALS_PER_DAY, n)  # 7-day window
+            vals[start:end] *= random.uniform(0.85, 1.20)  # ±15% deviation
+
+        elif atype == "sustained_drop":
+            # Consumption drops 60%+ vs 30-day baseline for 3+ days
+            start = random.randint(n // 4, n * 3 // 4)
+            end   = min(start + 3 * INTERVALS_PER_DAY, n)
+            vals[start:end] *= 0.35  # 65% drop
+
+        elif atype == "peer_deviation":
+            # 50%+ below peer cluster average for same consumer type
+            # Persistent reduction across whole series
+            vals *= 0.45
+
+        elif atype == "night_spike":
+            # Significant surge between 01:00-04:00 on multiple days
+            start_day = random.randint(n // 4, n * 3 // 4) // INTERVALS_PER_DAY
+            for d in range(start_day, min(start_day + 5, n // INTERVALS_PER_DAY)):
+                for h in range(1, 5):
+                    idx = d * INTERVALS_PER_DAY + h * 4
+                    if idx < n:
+                        vals[idx:idx+4] *= 5.5  # 4.5x spike
+
+        elif atype == "seasonal_nonconformity":
+            # No summer rise in Apr-Jun for AC-category consumers
             for i, ts in enumerate(timestamps):
-                if ts.month in SUMMER_MONTHS:
-                    vals[i] *= 0.45
+                if ts.month in SUMMER_MONTHS and meter.get("has_ac", False):
+                    vals[i] *= 0.50  # Suppress AC load in summer (anomalous)
 
         elif atype == "gradual_drift":
-            # Monotonic linear decay over last 8 weeks
+            # Slow monotonic decline over 8+ weeks vs peer trend
             drift_start = max(0, n - 8 * 7 * INTERVALS_PER_DAY)
-            slope = np.linspace(1.0, 0.30, n - drift_start)
+            slope = np.linspace(1.0, 0.25, n - drift_start)
             vals[drift_start:] *= slope
 
     return vals
@@ -203,22 +230,61 @@ def generate_feeder_series(feeder: dict, meter_vals: list[np.ndarray],
 
 
 # ── Anomaly Injection Map ──────────────────────────────────────────────────────
+# 40 anomalies distributed evenly across all 7 types (~5-6 each)
 ANOMALY_ASSIGNMENTS = [
-    # (meter_index_0based, anomaly_type)
-    (5,  "sustained_drop"),
-    (15, "sustained_drop"),
-    (25, "sustained_drop"),
-    (35, "night_spike"),
-    (45, "night_spike"),
-    (55, "peer_deviation"),
-    (65, "peer_deviation"),
-    (75, "meter_freeze"),
-    (85, "meter_freeze"),
-    (95, "seasonal_noncompliance"),
-    (105,"seasonal_noncompliance"),
-    (115,"gradual_drift"),
-    (125,"gradual_drift"),
-    # feeder-level mismatches (indices 14–15 handled separately)
+    # meter_freeze (6 anomalies: indices 5, 25, 45, 65, 85, 105)
+    (5,   "meter_freeze"),
+    (25,  "meter_freeze"),
+    (45,  "meter_freeze"),
+    (65,  "meter_freeze"),
+    (85,  "meter_freeze"),
+    (105, "meter_freeze"),
+    
+    # dt_mismatch (6 anomalies: indices 10, 30, 50, 70, 90, 110)
+    (10,  "dt_mismatch"),
+    (30,  "dt_mismatch"),
+    (50,  "dt_mismatch"),
+    (70,  "dt_mismatch"),
+    (90,  "dt_mismatch"),
+    (110, "dt_mismatch"),
+    
+    # sustained_drop (6 anomalies: indices 15, 35, 55, 75, 95, 115)
+    (15,  "sustained_drop"),
+    (35,  "sustained_drop"),
+    (55,  "sustained_drop"),
+    (75,  "sustained_drop"),
+    (95,  "sustained_drop"),
+    (115, "sustained_drop"),
+    
+    # peer_deviation (6 anomalies: indices 20, 40, 60, 80, 100, 120)
+    (20,  "peer_deviation"),
+    (40,  "peer_deviation"),
+    (60,  "peer_deviation"),
+    (80,  "peer_deviation"),
+    (100, "peer_deviation"),
+    (120, "peer_deviation"),
+    
+    # night_spike (5 anomalies: indices 125, 130, 135, 140, 145)
+    (125, "night_spike"),
+    (130, "night_spike"),
+    (135, "night_spike"),
+    (140, "night_spike"),
+    (145, "night_spike"),
+    
+    # seasonal_nonconformity (6 anomalies: indices 150, 155, 160, 165, 170, 175)
+    (150, "seasonal_nonconformity"),
+    (155, "seasonal_nonconformity"),
+    (160, "seasonal_nonconformity"),
+    (165, "seasonal_nonconformity"),
+    (170, "seasonal_nonconformity"),
+    (175, "seasonal_nonconformity"),
+    
+    # gradual_drift (5 anomalies: indices 180, 185, 190, 195, 199)
+    (180, "gradual_drift"),
+    (185, "gradual_drift"),
+    (190, "gradual_drift"),
+    (195, "gradual_drift"),
+    (199, "gradual_drift"),
 ]
 
 ANOMALY_METER_INDICES = {idx: atype for idx, atype in ANOMALY_ASSIGNMENTS}
@@ -249,7 +315,8 @@ def generate_all():
             global_meter_idx = fi * METERS_PER_FEEDER + mi
             anomaly = None
             if global_meter_idx in ANOMALY_METER_INDICES:
-                anomaly = {"type": ANOMALY_METER_INDICES[global_meter_idx]}
+                atype = ANOMALY_METER_INDICES[global_meter_idx]
+                anomaly = {"type": atype, "anomaly_type": atype}
 
             vals = generate_meter_series(meter, timestamps, anomaly)
             meter_series_list.append(vals)
@@ -286,6 +353,12 @@ def generate_all():
     print(f"   Feeder parquets:  {len(feeders)}")
     print(f"   Meter parquets:   {len(feeders)}")
     print(f"   Anomalies injected: {len(ANOMALY_ASSIGNMENTS)}")
+    print(f"   Distribution by type:")
+    from collections import Counter
+    anomaly_counts = Counter(atype for _, atype in ANOMALY_ASSIGNMENTS)
+    for atype in sorted(anomaly_counts.keys()):
+        print(f"      - {atype}: {anomaly_counts[atype]}")
+    print(f"   Consumer ID masking: ENABLED (SHA-256 hashing)")
 
 
 if __name__ == "__main__":
