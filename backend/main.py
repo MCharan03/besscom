@@ -71,8 +71,16 @@ async def startup_event():
     with open(meters_path)  as f: _meters  = json.load(f)
 
     print(f"[OK] Loaded {len(_feeders)} feeders, {len(_meters)} meters")
-    build_alert_cache(_feeders, _meters)
-    print(f"[OK] Alert cache built")
+    # Build alerts in the background so API startup is not blocked by heavy ML work.
+    def _build_cache_async():
+        try:
+            build_alert_cache(_feeders, _meters)
+            print("[OK] Alert cache built")
+        except Exception as exc:
+            print(f"[WARN] Alert cache build failed: {exc}")
+
+    threading.Thread(target=_build_cache_async, daemon=True).start()
+    print("[OK] Alert cache build started in background")
 
 
 def _append_audit(event_type: str, entity_id: str, actor: str, details: str):
