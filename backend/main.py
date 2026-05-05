@@ -4,6 +4,7 @@ All API endpoints as per PRD specification.
 """
 
 import os, sys, io, json, uuid, random
+import threading
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -17,7 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from ml.anomaly_detection import (
-    build_alert_cache, get_alerts, get_alert_by_id, log_analyst_action,
+    build_alert_cache, get_alerts, get_alert_by_id, log_analyst_action, route_alert,
 )
 from ml.forecasting import get_forecaster, DemandForecaster
 
@@ -41,6 +42,21 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 _feeders: list[dict] = []
 _meters:  list[dict] = []
 _audit_log: list[dict] = []
+FP_LOG: list[dict] = []
+_fp_log_lock = threading.Lock()
+
+
+def log_action(anomaly_id: str, action: str, analyst_id: str):
+    """Append-only, thread-safe analyst action log for false-positive metrics."""
+    entry = {
+        "anomaly_id": anomaly_id,
+        "action": action,
+        "analyst_id": analyst_id,
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "is_false_positive": action == "dismiss",
+    }
+    with _fp_log_lock:
+        FP_LOG.append(entry)
 
 @app.on_event("startup")
 async def startup_event():
@@ -252,17 +268,80 @@ class ActionPayload(BaseModel):
     analyst_id: str = "ANALYST-01"
     notes:      str = ""
 
+@app.get("/metrics/false-positive-rate")
+async def get_false_positive_rate():
+    with _fp_log_lock:
+        logs = list(FP_LOG)
+
+    if not logs:
+        return {
+            "false_positive_rate": 0.0,
+            "total_flagged": 0,
+            "confirmed": 0,
+            "dismissed": 0,
+            "escalated": 0,
+            "target_fp_rate": 0.10,
+            "status": "insufficient_data",
+            "last_updated": datetime.utcnow().isoformat() + "Z",
+        }
+
+    total_actioned = len(logs)
+    confirmed = sum(1 for e in logs if e["action"] == "confirm")
+    dismissed = sum(1 for e in logs if e["action"] == "dismiss")
+    escalated = sum(1 for e in logs if e["action"] == "escalate")
+    fp_rate = dismissed / total_actioned if total_actioned > 0 else 0.0
+
+    return {
+        "false_positive_rate": float(fp_rate),
+        "total_flagged": int(total_actioned),
+        "confirmed": int(confirmed),
+        "dismissed": int(dismissed),
+        "escalated": int(escalated),
+        "target_fp_rate": 0.10,
+        "status": "on_target" if fp_rate < 0.10 else "needs_review",
+        "last_updated": datetime.utcnow().isoformat() + "Z",
+    }
+
 @app.post("/api/anomalies/{alert_id}/action")
+@app.post("/anomalies/{alert_id}/action")
 async def analyst_action(alert_id: str, payload: ActionPayload):
     action_lower = payload.action.lower()
     if action_lower not in ("confirm", "dismiss", "escalate"):
         raise HTTPException(400, "action must be: confirm | dismiss | escalate")
+
+    # 1) Append immutable analyst action record for FP metrics.
+    log_action(alert_id, action_lower, payload.analyst_id)
+
     success = log_analyst_action(alert_id, action_lower, payload.analyst_id)
     if not success:
         raise HTTPException(404, f"Alert {alert_id} not found")
+
+    updated_alert = get_alert_by_id(alert_id)
+    if not updated_alert:
+        raise HTTPException(404, f"Alert {alert_id} not found")
+
+    # 2) Route alert based on current risk score.
+    routing = route_alert(float(updated_alert.get("risk_score", 0.0)), alert_id)
+    updated_alert["route_status"] = routing["status"]
+    updated_alert["notify_supervisor"] = routing["notify_supervisor"]
+    updated_alert["routing"] = routing
+
+    # 3) Add escalation audit entry when analyst escalates.
+    if action_lower == "escalate":
+        _append_audit("escalation", alert_id, payload.analyst_id,
+                      f"Escalated anomaly by analyst | Notes: {payload.notes or 'None'}")
+
     _append_audit("ANALYST_ACTION", alert_id, payload.analyst_id,
                   f"Action: {payload.action.upper()} | Notes: {payload.notes or 'None'}")
-    return {"status": "logged", "alert_id": alert_id, "action": payload.action}
+
+    # 4) Return updated anomaly record including route_alert output.
+    return {
+        "status": "logged",
+        "alert_id": alert_id,
+        "action": payload.action,
+        "route_alert": routing,
+        "anomaly": updated_alert,
+    }
 
 
 # -- GET /api/meters -----------------------------------------------------------

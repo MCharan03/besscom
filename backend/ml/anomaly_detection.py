@@ -7,8 +7,10 @@ Composite risk scoring 0-100 per PRD spec.
 import os
 import json
 import uuid
+import warnings
 import numpy as np
 import pandas as pd
+import shap
 from datetime import datetime, timedelta
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
@@ -40,6 +42,134 @@ RECOMMENDED_ACTIONS = {
     "dt_mismatch":          "Initiate feeder-level upstream connection audit. Survey all meters downstream of DT for potential bypass.",
     "impossible_reading":   "Immediate meter inspection. Check for data corruption, reverse polarity, or tampered display.",
 }
+
+
+MODEL_FEATURE_COLS = ["y", "hour", "dow", "lag_24h", "lag_168h", "roll_7d_mean", "roll_7d_std"]
+
+
+# ── Routing & Explainability ──────────────────────────────────────────────────
+_routing_audit_trail: list[dict] = []
+
+
+def route_alert(score: float, anomaly_id: str) -> dict:
+    """
+    Apply staged alert thresholds and produce routing metadata.
+
+    Thresholds:
+    - score < 60: review_queue
+    - 60 <= score < 80: dashboard_alert (audit logged)
+    - score >= 80: sms_escalation (audit logged + supervisor notify)
+    """
+    now_iso = datetime.utcnow().isoformat() + "Z"
+    notify_supervisor = False
+
+    if score < 60:
+        status = "review_queue"
+    elif score < 80:
+        status = "dashboard_alert"
+        _routing_audit_trail.append({
+            "timestamp": now_iso,
+            "anomaly_id": anomaly_id,
+            "event_type": "dashboard_alert",
+            "score": round(float(score), 2),
+        })
+    else:
+        status = "sms_escalation"
+        notify_supervisor = True
+        _routing_audit_trail.append({
+            "timestamp": now_iso,
+            "anomaly_id": anomaly_id,
+            "event_type": "sms_escalation",
+            "score": round(float(score), 2),
+        })
+
+    return {
+        "anomaly_id": anomaly_id,
+        "score": round(float(score), 2),
+        "status": status,
+        "notify_supervisor": notify_supervisor,
+        "timestamp": now_iso,
+    }
+
+
+def explain_anomaly(features: pd.DataFrame, model) -> dict:
+    """
+    Generate SHAP-based feature contribution explanation.
+
+    - Uses TreeExplainer for IsolationForest.
+    - Uses KernelExplainer otherwise with a 50-sample background dataset.
+    """
+    if features is None or features.empty:
+        return {
+            "top_features": [],
+            "contributions": {},
+            "summary": "Insufficient features available for anomaly explanation.",
+        }
+
+    X = features.copy()
+
+    try:
+        if isinstance(model, IsolationForest):
+            explainer = shap.TreeExplainer(model)
+            shap_values = explainer.shap_values(X)
+            values = np.array(shap_values)
+            if values.ndim == 1:
+                sample_values = values
+            else:
+                sample_values = values[0]
+        else:
+            # KernelExplainer expects a callable that returns model score/output.
+            background = getattr(model, "_shap_background", None)
+            if background is None or len(background) == 0:
+                background = X.sample(n=min(50, len(X)), random_state=42)
+            else:
+                background = background.sample(n=min(50, len(background)), random_state=42)
+
+            def _predict_fn(arr):
+                pred = model.predict(arr)
+                return np.array(pred).reshape(-1, 1)
+
+            explainer = shap.KernelExplainer(_predict_fn, background.values)
+            shap_values = explainer.shap_values(X.iloc[[0]].values, nsamples=100)
+            values = np.array(shap_values)
+            if values.ndim == 3:
+                sample_values = values[0][0]
+            elif values.ndim == 2:
+                sample_values = values[0]
+            else:
+                sample_values = values
+
+        contributions = {
+            col: round(float(sample_values[i]), 4)
+            for i, col in enumerate(X.columns)
+        }
+        ranked = sorted(contributions.items(), key=lambda kv: abs(kv[1]), reverse=True)
+        top_features = [name for name, _ in ranked[:5]]
+
+        if ranked:
+            first_name, first_val = ranked[0]
+            second_name, second_val = ranked[1] if len(ranked) > 1 else (None, 0.0)
+            if second_name is not None:
+                summary = (
+                    f"High anomaly score driven by {first_name} ({first_val:.2f}) "
+                    f"and {second_name} ({second_val:.2f})"
+                )
+            else:
+                summary = f"High anomaly score driven by {first_name} ({first_val:.2f})"
+        else:
+            summary = "No significant SHAP contributors were identified."
+
+        return {
+            "top_features": top_features,
+            "contributions": contributions,
+            "summary": summary,
+        }
+    except Exception:
+        return {
+            "top_features": [],
+            "contributions": {},
+            "summary": "SHAP explanation unavailable for this anomaly instance.",
+        }
 
 
 # ── Statistical Detection ──────────────────────────────────────────────────────
@@ -205,6 +335,42 @@ def isolation_forest_score(series: pd.Series) -> float:
     return round(float(normalised.mean() * 100), 1)
 
 
+def isolation_forest_artifacts(series: pd.Series):
+    """
+    Build Isolation Forest score plus artifacts needed for SHAP explanations.
+    Returns (score, latest_feature_row, fitted_model, background_features).
+    """
+    feat = build_meter_features(series)
+    if len(feat) < 200:
+        return 0.0, None, None, None
+
+    split = int(len(feat) * 0.8)
+    X_train = feat.iloc[:split][MODEL_FEATURE_COLS].fillna(0)
+    X_test = feat.iloc[-96:][MODEL_FEATURE_COLS].fillna(0)
+
+    scaler = StandardScaler()
+    X_train_s = scaler.fit_transform(X_train)
+    X_test_s = scaler.transform(X_test)
+
+    X_train_scaled = pd.DataFrame(X_train_s, index=X_train.index, columns=MODEL_FEATURE_COLS)
+    X_test_scaled = pd.DataFrame(X_test_s, index=X_test.index, columns=MODEL_FEATURE_COLS)
+
+    iso = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
+    iso.fit(X_train_scaled.values)
+
+    # Attach background for non-tree fallback compatibility.
+    iso._shap_background = X_train_scaled
+
+    raw_scores = iso.decision_function(X_test_scaled.values)
+    min_s, max_s = raw_scores.min(), raw_scores.max()
+    if max_s == min_s:
+        return 0.0, X_test_scaled.tail(1), iso, X_train_scaled
+
+    normalised = 1 - (raw_scores - min_s) / (max_s - min_s)
+    score = round(float(normalised.mean() * 100), 1)
+    return score, X_test_scaled.tail(1), iso, X_train_scaled
+
+
 # ── Composite Scoring ──────────────────────────────────────────────────────────
 
 def compute_composite_score(
@@ -262,7 +428,7 @@ def generate_anomaly_alert(
     consistency = float((z_7d > 2.0).mean() * 100)
 
     # Layer 2: ML (Isolation Forest)
-    iso_score = isolation_forest_score(series)
+    iso_score, iso_features, iso_model, _ = isolation_forest_artifacts(series)
 
     # Layer 3: Rule engine
     rule_alerts = rule_engine(meter_id, series, consumer_type)
@@ -317,8 +483,12 @@ def generate_anomaly_alert(
     # Time series evidence (last 14 days)
     evidence_series = series.tail(96 * 14)
 
+    alert_id = str(uuid.uuid4())[:8].upper()
+    routing = route_alert(comp_score, alert_id)
+
     alert = {
-        "alert_id":      str(uuid.uuid4())[:8].upper(),
+        "alert_id":      alert_id,
+        "anomaly_id":    alert_id,
         "meter_id":      meter_id,
         "feeder_id":     feeder_id,
         "locality":      locality,
@@ -356,7 +526,15 @@ def generate_anomaly_alert(
         "chart_values":     [round(float(v), 2) for v in evidence_series.values],
         "chart_baseline":   baseline_30d,
         "action_log":       [],
+        "route_status":    routing["status"],
+        "notify_supervisor": routing["notify_supervisor"],
+        "routing":         routing,
     }
+
+    # SHAP explanation is mandatory for alerts routed to analyst/supervisor (score >= 60).
+    if comp_score >= 60 and iso_features is not None and iso_model is not None:
+        alert["explanation"] = explain_anomaly(iso_features, iso_model)
+
     return alert
 
 
@@ -425,8 +603,8 @@ def get_alerts(status: str = "all") -> list[dict]:
     return [
         a for a in _alert_cache
         if status == "all"
-        or (status == "active" and a["alert_status"] in ("CRITICAL", "HIGH"))
-        or (status == "review" and a["alert_status"] == "REVIEW")
+        or (status == "active" and a.get("route_status") in ("dashboard_alert", "sms_escalation"))
+        or (status == "review" and a.get("route_status") == "review_queue")
     ]
 
 
