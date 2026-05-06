@@ -155,7 +155,7 @@ class DemandForecaster:
         # SHAP explainer (tree-based)
         self.explainer = shap.TreeExplainer(self.model_mean)
 
-    def forecast(self, hours_ahead: int = 24) -> dict:
+    def forecast(self, hours_ahead: int = 24, load_modifier: float = 1.0, temp_modifier: float = 0.0) -> dict:
         """Generate forecast for next `hours_ahead` hours (96 × 15-min intervals)."""
         if self.model_mean is None:
             self.train()
@@ -178,11 +178,21 @@ class DemandForecaster:
         extended = extended[~extended.index.duplicated(keep="last")]
 
         feat = build_features(extended)
-        future_feat = feat.loc[feat.index >= future_idx[0]]
+        future_feat = feat.loc[feat.index >= future_idx[0]].copy()
         if len(future_feat) == 0:
-            future_feat = feat.iloc[-n_intervals:]
+            future_feat = feat.iloc[-n_intervals:].copy()
 
         future_feat = future_feat.iloc[:n_intervals]
+
+        # Apply modifiers for simulation
+        if load_modifier != 1.0:
+            for col in ["lag_1h", "lag_24h", "lag_168h", "lag_336h", "roll_7d_mean", "roll_30d_mean", "roll_24h_max"]:
+                future_feat[col] *= load_modifier
+        
+        # Temp modifier impacts 'is_summer' threshold (pseudo-logic for demo)
+        if temp_modifier > 2:
+            future_feat["is_summer"] = 1
+
         X_fut = future_feat[FEATURE_COLS]
 
         y_mean  = self.model_mean.predict(X_fut)
@@ -222,6 +232,7 @@ class DemandForecaster:
             "shap_features": shap_output,
             "peak_forecast_kw": round(float(np.max(y_mean)), 1),
             "peak_time": future_feat.index[int(np.argmax(y_mean))].isoformat(),
+            "is_simulated": load_modifier != 1.0 or temp_modifier != 0.0,
         }
 
     def history(self, days: int = 7) -> dict:

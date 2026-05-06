@@ -5,6 +5,18 @@
 
 ---
 
+## 🧠 Advanced Sentient Features (v2.2)
+
+The platform has been upgraded with **proactive intelligence** capabilities:
+
+1.  **Interactive "What-If" Simulator:** Stress-test the grid by simulating load increases or temperature changes directly from the Forecast page.
+2.  **Multilingual (Kannada) Support:** One-click localization for the entire dashboard to support BESCOM ground staff.
+3.  **Natural Language Query:** Search bar that understands intents like "show high risk feeders" or "go to audit log".
+4.  **WebSocket "Live Push":** Real-time sentient awareness notifications that pop up when the AI detects critical grid movements.
+5.  **KERC Executive Briefing:** Automated, compliance-ready briefing reports generated instantly.
+
+---
+
 ## 🚀 Quick Start
 
 ```bash

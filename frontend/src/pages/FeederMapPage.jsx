@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import FeederMap from '../components/FeederMap';
 import RiskBadge from '../components/RiskBadge';
 
-const API = 'http://localhost:8000/api';
+const API = 'http://localhost:8001/api';
 
 const LOCALITY_FEEDERS = {
   jayanagar:    ['F01','F02','F03','F04'],

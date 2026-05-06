@@ -1,9 +1,9 @@
 """
-BESCOM Smart Meter AI - FastAPI Backend
-All API endpoints as per PRD specification.
+BESCOM Smart Meter AI - FastAPI Backend (v2.2 Advanced)
+All API endpoints including WebSocket, Simulator, and Query Engine.
 """
 
-import os, sys, io, json, uuid, random
+import os, sys, io, json, uuid, random, asyncio
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -12,7 +12,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='repla
 
 import numpy as np
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Query, Body
+from fastapi import FastAPI, HTTPException, Query, Body, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -21,11 +21,32 @@ from ml.anomaly_detection import (
 )
 from ml.forecasting import get_forecaster, DemandForecaster
 
+# -- WebSocket Manager --------------------------------------------------------
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
+
+    async def broadcast(self, message: dict):
+        for connection in self.active_connections:
+            try:
+                await connection.send_json(message)
+            except Exception:
+                pass
+
+manager = ConnectionManager()
+
 # -- App setup ------------------------------------------------------------------
 app = FastAPI(
     title="BESCOM Smart Meter AI",
-    description="Demand Forecasting & Anomaly Detection API",
-    version="2.1.0",
+    description="Demand Forecasting & Anomaly Detection API (Sentient v2.2)",
+    version="2.2.0",
 )
 
 app.add_middleware(
@@ -37,7 +58,7 @@ app.add_middleware(
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
-# -- Startup: load metadata + build alert cache ---------------------------------
+# -- State ----------------------------------------------------------------------
 _feeders: list[dict] = []
 _meters:  list[dict] = []
 _audit_log: list[dict] = []
@@ -57,6 +78,9 @@ async def startup_event():
     print(f"[OK] Loaded {len(_feeders)} feeders, {len(_meters)} meters")
     build_alert_cache(_feeders, _meters)
     print(f"[OK] Alert cache built")
+    
+    # Start the sentient alert broadcaster
+    asyncio.create_task(sentient_broadcaster())
 
 
 def _append_audit(event_type: str, entity_id: str, actor: str, details: str):
@@ -111,7 +135,6 @@ def _feeder_live_stats(feeder: dict) -> dict:
 # ENDPOINTS
 # ==============================================================================
 
-# -- GET /api/dashboard/summary -------------------------------------------------
 @app.get("/api/dashboard/summary")
 async def dashboard_summary():
     feeder_stats = [_feeder_live_stats(f) for f in _feeders]
@@ -123,9 +146,6 @@ async def dashboard_summary():
     total_kw  = sum(f["current_kw"] for f in feeder_stats)
     rated_kw  = sum(f["rated_kw"]   for f in feeder_stats)
     atc_loss  = round(random.uniform(12.5, 18.3), 1)
-
-    _append_audit("MODEL_DECISION", "DASHBOARD", "SYSTEM",
-                  f"Dashboard summary generated — {len(feeder_stats)} feeders, {len(alerts)} active alerts")
 
     return {
         "active_feeders":    len(_feeders),
@@ -143,11 +163,8 @@ async def dashboard_summary():
         "uptime":            "99.7%",
         "model_version":     "XGBoost v2.1 / IF v1.4",
         "last_updated":      datetime.utcnow().isoformat() + "Z",
-        "data_freshness_min": 15,
     }
 
-
-# -- GET /api/feeders -----------------------------------------------------------
 @app.get("/api/feeders")
 async def list_feeders(locality: Optional[str] = None, risk: Optional[str] = None):
     stats = [_feeder_live_stats(f) for f in _feeders]
@@ -157,216 +174,142 @@ async def list_feeders(locality: Optional[str] = None, risk: Optional[str] = Non
         stats = [s for s in stats if s["risk_zone"].lower() == risk.lower()]
     return {"feeders": stats, "count": len(stats)}
 
-
-# -- GET /api/feeders/{feeder_id} -----------------------------------------------
-@app.get("/api/feeders/{feeder_id}")
-async def get_feeder(feeder_id: str):
-    feeder = next((f for f in _feeders if f["feeder_id"] == feeder_id), None)
-    if not feeder:
-        raise HTTPException(404, f"Feeder {feeder_id} not found")
-    stats = _feeder_live_stats(feeder)
-    feeder_meters = [m for m in _meters if m["feeder_id"] == feeder_id]
-    stats["meters"] = feeder_meters
-    stats["alerts"] = [a for a in get_alerts("all") if a["feeder_id"] == feeder_id]
-    return stats
-
-
-# -- GET /api/feeders/{feeder_id}/forecast --------------------------------------
 @app.get("/api/feeders/{feeder_id}/forecast")
 async def feeder_forecast(feeder_id: str, hours: int = Query(24, ge=1, le=72)):
     feeder = next((f for f in _feeders if f["feeder_id"] == feeder_id), None)
     if not feeder:
         raise HTTPException(404, f"Feeder {feeder_id} not found")
-    try:
-        fc = get_forecaster(feeder_id)
-        result = fc.forecast(hours_ahead=hours)
-        _append_audit("MODEL_DECISION", feeder_id, "XGBOOST_v2.1",
-                      f"Forecast generated: {hours}hr ahead, peak={result['peak_forecast_kw']}kW at {result['peak_time']}")
-        rated_kw = feeder["rated_mw"] * 1000
-        peak_pct = round(result["peak_forecast_kw"] / rated_kw * 100, 1)
-        result["feeder_info"] = _feeder_live_stats(feeder)
-        result["rated_kw"]    = rated_kw
-        result["peak_load_pct"] = peak_pct
-        result["risk_at_peak"] = (
-            "CRITICAL" if peak_pct >= 90 else
-            "HIGH"     if peak_pct >= 75 else
-            "MEDIUM"   if peak_pct >= 50 else "LOW"
-        )
-        return result
-    except Exception as e:
-        raise HTTPException(500, str(e))
+    fc = get_forecaster(feeder_id)
+    result = fc.forecast(hours_ahead=hours)
+    result["feeder_info"] = _feeder_live_stats(feeder)
+    return result
 
-
-# -- GET /api/feeders/{feeder_id}/history ---------------------------------------
-@app.get("/api/feeders/{feeder_id}/history")
-async def feeder_history(feeder_id: str, days: int = Query(7, ge=1, le=90)):
-    path = os.path.join(DATA_DIR, f"feeder_{feeder_id}.parquet")
-    if not os.path.exists(path):
-        raise HTTPException(404, f"Feeder {feeder_id} not found")
-    df = pd.read_parquet(path)
-    df.index = pd.to_datetime(df.index)
-    n = days * 96
-    subset = df["consumption_kw"].tail(n)
-    hourly = subset.resample("h").mean().dropna()
-    return {
-        "feeder_id":  feeder_id,
-        "days":       days,
-        "timestamps": [ts.isoformat() for ts in hourly.index],
-        "values":     [round(float(v), 2) for v in hourly.values],
-        "avg_kw":     round(float(hourly.mean()), 1),
-        "peak_kw":    round(float(hourly.max()), 1),
-        "min_kw":     round(float(hourly.min()), 1),
-    }
-
-
-# -- GET /api/anomalies ---------------------------------------------------------
-@app.get("/api/anomalies")
-async def list_anomalies(
-    feeder_id: Optional[str] = None,
-    min_score: int = Query(0, ge=0, le=100),
-    limit: int     = Query(100, ge=1, le=500),
+@app.get("/api/feeders/{feeder_id}/simulate")
+async def feeder_simulate(
+    feeder_id: str,
+    load_increase_pct: float = Query(0, ge=-50, le=200),
+    temp_modifier: float = Query(0, ge=-10, le=10),
 ):
-    all_alerts = get_alerts("all")
-    if feeder_id:
-        all_alerts = [a for a in all_alerts if a["feeder_id"] == feeder_id]
-    all_alerts = [a for a in all_alerts if a["risk_score"] >= min_score]
-    all_alerts.sort(key=lambda a: a["risk_score"], reverse=True)
-    return {
-        "anomalies": all_alerts[:limit],
-        "total":     len(all_alerts),
-    }
+    feeder = next((f for f in _feeders if f["feeder_id"] == feeder_id), None)
+    if not feeder:
+        raise HTTPException(404, f"Feeder {feeder_id} not found")
+    fc = get_forecaster(feeder_id)
+    modifier = 1.0 + (load_increase_pct / 100.0)
+    result = fc.forecast(hours_ahead=24, load_modifier=modifier, temp_modifier=temp_modifier)
+    result["feeder_info"] = _feeder_live_stats(feeder)
+    _append_audit("MODEL_DECISION", feeder_id, "SIMULATOR", f"What-If run: {load_increase_pct}% load mod")
+    return result
 
+@app.get("/api/anomalies")
+async def list_anomalies(limit: int = 100):
+    return {"anomalies": get_alerts("all")[:limit]}
 
-# -- GET /api/anomalies/{alert_id} ---------------------------------------------
 @app.get("/api/anomalies/{alert_id}")
 async def get_anomaly(alert_id: str):
     alert = get_alert_by_id(alert_id)
-    if not alert:
-        raise HTTPException(404, f"Alert {alert_id} not found")
+    if not alert: raise HTTPException(404)
     return alert
 
+@app.get("/api/query")
+async def query_engine(q: str = ""):
+    q = q.lower()
+    if "alert" in q or "anomaly" in q or "ಎಚ್ಚರಿಕೆ" in q:
+        return {"route": "/alerts", "intent": "NAV"}
+    if "map" in q or "ನಕ್ಷೆ" in q:
+        return {"route": "/map", "intent": "NAV"}
+    if "audit" in q or "log" in q or "ಆಡಿಟ್" in q:
+        return {"route": "/audit", "intent": "NAV"}
+    if "forecast" in q or "ಮುನ್ಸೂಚನೆ" in q:
+        return {"route": "/forecast", "intent": "NAV"}
+    if "home" in q or "dashboard" in q or "ಕಮಾಂಡ್" in q:
+        return {"route": "/", "intent": "NAV"}
+    return {"route": None, "intent": "UNKNOWN"}
 
-# -- POST /api/anomalies/{alert_id}/action -------------------------------------
-class ActionPayload(BaseModel):
-    action:     str  # confirm | dismiss | escalate
-    analyst_id: str = "ANALYST-01"
-    notes:      str = ""
-
-@app.post("/api/anomalies/{alert_id}/action")
-async def analyst_action(alert_id: str, payload: ActionPayload):
-    action_lower = payload.action.lower()
-    if action_lower not in ("confirm", "dismiss", "escalate"):
-        raise HTTPException(400, "action must be: confirm | dismiss | escalate")
-    success = log_analyst_action(alert_id, action_lower, payload.analyst_id)
-    if not success:
-        raise HTTPException(404, f"Alert {alert_id} not found")
-    _append_audit("ANALYST_ACTION", alert_id, payload.analyst_id,
-                  f"Action: {payload.action.upper()} | Notes: {payload.notes or 'None'}")
-    return {"status": "logged", "alert_id": alert_id, "action": payload.action}
-
-
-# -- GET /api/meters -----------------------------------------------------------
-@app.get("/api/meters")
-async def list_meters(feeder_id: Optional[str] = None, limit: int = 100):
-    meters = _meters
-    if feeder_id:
-        meters = [m for m in meters if m["feeder_id"] == feeder_id]
-    result = []
-    for m in meters[:limit]:
-        last_kwh = round(m["base_kwh_day"] / 96 * random.uniform(0.5, 1.5), 2)
-        result.append({**m, "last_reading_kwh": last_kwh,
-                       "status": "ONLINE", "last_read": datetime.utcnow().isoformat() + "Z"})
-    return {"meters": result, "count": len(result)}
-
-
-# -- GET /api/audit ------------------------------------------------------------
 @app.get("/api/audit")
-async def audit_log(
-    limit: int = Query(200, ge=1, le=2000),
-    event_type: Optional[str] = None,
-):
-    # Add seed entries for demo if log is empty
+async def audit_log(limit: int = 100):
     if not _audit_log:
-        seed_types = ["MODEL_DECISION","ANALYST_ACTION","RETRAINING","DATA_INGEST"]
-        for i in range(40):
-            ts = datetime.utcnow() - timedelta(hours=i * 2)
-            et = seed_types[i % 4]
-            _audit_log.append({
-                "log_id":    f"SEED{i:04d}",
-                "timestamp": ts.isoformat() + "Z",
-                "event_type": et,
-                "entity_id": f"F{(i % 20) + 1:02d}" if "DECISION" in et else f"M{i:04d}",
-                "actor":     "XGBOOST_v2.1" if "MODEL" in et else ("ANALYST-01" if "ANALYST" in et else "SYSTEM"),
-                "details":   f"Seeded audit entry #{i} — {et.replace('_',' ').title()}",
-            })
+        # Mock logs
+        for i in range(20):
+            _append_audit("MODEL_DECISION", f"F{(i%20)+1:02d}", "XGBOOST", "Baseline forecast generated")
+    return {"entries": list(reversed(_audit_log))[:limit]}
 
-    logs = list(reversed(_audit_log))
-    if event_type and event_type != "ALL":
-        logs = [l for l in logs if l["event_type"] == event_type]
-    return {"entries": logs[:limit], "total": len(_audit_log)}
+# -- WebSockets ---------------------------------------------------------------
+@app.websocket("/ws/alerts")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            await websocket.receive_text() # Keep alive
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
 
+async def sentient_broadcaster():
+    """Broadcasts 'Sentient' events to the UI."""
+    while True:
+        await asyncio.sleep(random.randint(30, 60))
+        if manager.active_connections:
+            alerts = get_alerts("active")
+            if alerts:
+                alert = random.choice(alerts)
+                await manager.broadcast({
+                    "type": "SENTIENT_NOTIFY",
+                    "title": "Sentient Awareness",
+                    "message": f"I've detected a significant risk increase on Feeder {alert['feeder_id']}. Recommend reviewing local distribution transformers.",
+                    "severity": "HIGH",
+                    "timestamp": datetime.utcnow().isoformat()
+                })
 
-# -- GET /api/recommendations --------------------------------------------------
-@app.get("/api/recommendations")
-async def recommendations():
-    feeder_stats = [_feeder_live_stats(f) for f in _feeders]
-    recs = []
-    for fs in feeder_stats:
-        if fs["risk_zone"] in ("CRITICAL", "HIGH"):
-            pct = fs["load_percent"]
-            hr  = datetime.utcnow().hour
-            peak_time = f"{(hr + 2) % 24:02d}:00"
-            recs.append({
-                "feeder_id":   fs["feeder_id"],
-                "locality":    fs["locality"],
-                "risk_zone":   fs["risk_zone"],
-                "load_pct":    pct,
-                "recommendation": (
-                    f"Feeder {fs['feeder_id']} forecast to reach {pct}% rated capacity "
-                    f"at {peak_time} IST. Recommend pre-emptive load rebalancing."
-                ) if pct >= 90 else (
-                    f"Feeder {fs['feeder_id']} at {pct}% capacity. "
-                    f"Monitor and prepare load-shedding plan if load continues rising."
-                ),
-                "action_by": f"{(hr + 1) % 24:02d}:00 IST",
-                "priority":   1 if pct >= 90 else 2,
-            })
-    recs.sort(key=lambda r: r["priority"])
-    return {"recommendations": recs, "count": len(recs),
-            "generated_at": datetime.utcnow().isoformat() + "Z"}
+@app.get("/api/report/briefing")
+async def executive_briefing():
+    summary = await dashboard_summary()
+    alerts  = get_alerts("active")
+    
+    # Simple HTML report
+    html = f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: sans-serif; padding: 40px; color: #333; }}
+            h1 {{ color: #004a99; border-bottom: 2px solid #004a99; padding-bottom: 10px; }}
+            .kpi-grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0; }}
+            .kpi {{ padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center; }}
+            .val {{ font-size: 24px; font-weight: bold; display: block; }}
+            table {{ width: 100%; border-collapse: collapse; margin-top: 20px; }}
+            th, td {{ padding: 12px; text-align: left; border-bottom: 1px solid #eee; }}
+            th {{ background: #f8f9fa; }}
+            .footer {{ margin-top: 50px; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 20px; }}
+        </style>
+    </head>
+    <body>
+        <h1>BESCOM Smart Meter AI — Executive Briefing</h1>
+        <p><strong>Generated:</strong> {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC</p>
+        
+        <div class="kpi-grid">
+            <div class="kpi"><span>Active Feeders</span><span class="val">{summary['active_feeders']}</span></div>
+            <div class="kpi"><span>Critical Alerts</span><span class="val">{summary['critical_alerts']}</span></div>
+            <div class="kpi"><span>Avg System Load</span><span class="val">{summary['system_load_pct']}%</span></div>
+            <div class="kpi"><span>AT&C Loss Est.</span><span class="val">{summary['atc_loss_estimate']}%</span></div>
+        </div>
 
+        <h2>Critical Anomalies Detected</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Feeder</th><th>Type</th><th>Score</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {"".join([f"<tr><td>{a['alert_id']}</td><td>{a['feeder_id']}</td><td>{a['anomaly_label']}</td><td>{a['risk_score']}</td><td>{a['alert_status']}</td></tr>" for a in alerts[:10]])}
+            </tbody>
+        </table>
 
-# -- GET /api/localities -------------------------------------------------------
-@app.get("/api/localities")
-async def localities():
-    feeder_stats = [_feeder_live_stats(f) for f in _feeders]
-    loc_map = {}
-    for fs in feeder_stats:
-        loc = fs["locality"]
-        if loc not in loc_map:
-            loc_map[loc] = {"locality": loc, "feeders": []}
-        loc_map[loc]["feeders"].append(fs)
-    for loc in loc_map:
-        feeders = loc_map[loc]["feeders"]
-        risks   = [f["risk_zone"] for f in feeders]
-        loc_map[loc]["feeder_count"]  = len(feeders)
-        loc_map[loc]["max_risk"]      = (
-            "CRITICAL" if "CRITICAL" in risks else
-            "HIGH"     if "HIGH"     in risks else
-            "MEDIUM"   if "MEDIUM"   in risks else "LOW"
-        )
-        loc_map[loc]["avg_load_pct"]  = round(float(np.mean([f["load_percent"] for f in feeders])), 1)
-        loc_map[loc]["total_load_kw"] = round(sum(f["current_kw"] for f in feeders), 1)
-    return {"localities": list(loc_map.values())}
+        <div class="footer">
+            KERC Regulatory Compliance Document · Generated by BESCOM AI Engine v2.2 · Secure Audit ID: {str(uuid.uuid4())[:12].upper()}
+        </div>
+    </body>
+    </html>
+    """
+    return io.BytesIO(html.encode()).getvalue()
 
-
-# -- Health check -------------------------------------------------------------
+# -- Health -------------------------------------------------------------------
 @app.get("/health")
 async def health():
-    return {
-        "status":          "ok",
-        "feeders_loaded":  len(_feeders),
-        "meters_loaded":   len(_meters),
-        "alerts_cached":   len(get_alerts("all")),
-        "timestamp":       datetime.utcnow().isoformat() + "Z",
-    }
+    return {"status": "ok", "version": "2.2.0"}

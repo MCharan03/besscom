@@ -1,15 +1,17 @@
 import { NavLink, useLocation } from 'react-router-dom';
+import { useLanguage } from '../LanguageContext';
 
 const NAV_ITEMS = [
-  { to: '/',         icon: '⚡', label: 'Command Center' },
-  { to: '/forecast', icon: '📈', label: 'Demand Forecast' },
-  { to: '/alerts',   icon: '🔔', label: 'Anomaly Alerts' },
-  { to: '/map',      icon: '🗺️', label: 'Feeder Map' },
-  { to: '/audit',    icon: '📋', label: 'Audit Log' },
+  { to: '/',         icon: '⚡', key: 'command_center' },
+  { to: '/forecast', icon: '📈', key: 'demand_forecast' },
+  { to: '/alerts',   icon: '🔔', key: 'anomaly_alerts' },
+  { to: '/map',      icon: '🗺️', key: 'feeder_map' },
+  { to: '/audit',    icon: '📋', key: 'audit_log' },
 ];
 
 export default function Sidebar() {
   const location = useLocation();
+  const { lang, setLang, t } = useLanguage();
 
   return (
     <aside className="sidebar">
@@ -23,10 +25,10 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <div className="sidebar-section-label">Navigation</div>
+      <div className="sidebar-section-label">{lang === 'en' ? 'Navigation' : 'ನ್ಯಾವಿಗೇಷನ್'}</div>
 
       <nav className="sidebar-nav">
-        {NAV_ITEMS.map(({ to, icon, label }) => {
+        {NAV_ITEMS.map(({ to, icon, key }) => {
           const isActive = to === '/'
             ? location.pathname === '/'
             : location.pathname.startsWith(to);
@@ -37,16 +39,37 @@ export default function Sidebar() {
               className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
             >
               <span className="sidebar-nav-icon">{icon}</span>
-              <span>{label}</span>
+              <span>{t(key)}</span>
             </NavLink>
           );
         })}
       </nav>
 
       <div className="sidebar-footer">
+        {/* Language Toggle */}
+        <div style={{ marginBottom: 12, paddingBottom: 12, borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ fontSize: 10, color: 'var(--color-text-faint)', marginBottom: 6, textTransform: 'uppercase' }}>{t('language')}</div>
+          <div style={{ display: 'flex', gap: 6 }}>
+            <button
+              onClick={() => setLang('en')}
+              className={`btn ${lang === 'en' ? 'btn-primary' : 'btn-ghost'}`}
+              style={{ fontSize: 9, padding: '4px 8px', flex: 1 }}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang('kn')}
+              className={`btn ${lang === 'kn' ? 'btn-primary' : 'btn-ghost'}`}
+              style={{ fontSize: 9, padding: '4px 8px', flex: 1 }}
+            >
+              ಕನ್ನಡ
+            </button>
+          </div>
+        </div>
+
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
           <span className="sidebar-status-dot" />
-          <span className="sidebar-status-text">All systems operational</span>
+          <span className="sidebar-status-text">{lang === 'en' ? 'All systems operational' : 'ಎಲ್ಲಾ ವ್ಯವಸ್ಥೆಗಳು ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿವೆ'}</span>
         </div>
         <div style={{ fontSize: 10, color: 'var(--color-text-faint)' }}>
           KERC Compliant · v2.1.0 · © 2024 BESCOM
